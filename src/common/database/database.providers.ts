@@ -1,4 +1,3 @@
-
 import { DataSource } from 'typeorm';
 import { ConfigService } from '@nestjs/config';
 
@@ -13,10 +12,8 @@ export const databaseProviders = [
         port: configService.getOrThrow<number>('DB_PORT'),
         username: configService.getOrThrow<string>('DB_USERNAME'),
         password: configService.getOrThrow<string>('DB_PASSWORD'),
-        database: configService.getOrThrow<string>('DB_NAME'),
-        entities: [
-            __dirname + '/../**/*.entity{.ts,.js}',
-        ],
+        database: configService.getOrThrow<string>('DB_DATABASE'),
+        entities: [__dirname + '../../../modules/**/*.entity{.ts,.js}'],
         synchronize: true,
       });
 
