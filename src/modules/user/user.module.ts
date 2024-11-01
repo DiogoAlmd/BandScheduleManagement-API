@@ -3,10 +3,11 @@ import { DatabaseModule } from "src/common/database/database.module";
 import { UserService } from "./user.service";
 import { UserController } from "./user.controller";
 import { userProviders } from "./user.providers";
+import { HashService } from "src/common/middlewares/hash.service";
 
 @Module({
   imports: [DatabaseModule],
-  providers: [UserService, ...userProviders],
+  providers: [UserService, HashService, ...userProviders],
   controllers: [UserController],
 })
 export class UserModule {}
