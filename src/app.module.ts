@@ -5,6 +5,7 @@ import { HelloModule } from "./modules/hello/hello.module";
 import { UserModule } from "./modules/user/user.module";
 import { AuthModule } from "./modules/auth/auth.module";
 import { InstrumentModule } from "./modules/instrument/instrument.module";
+import { MusicianModule } from "./modules/musician/musician.module";
 
 @Module({
   imports: [
@@ -29,6 +30,7 @@ import { InstrumentModule } from "./modules/instrument/instrument.module";
     UserModule,
     AuthModule,
     InstrumentModule,
+    MusicianModule,
   ],
 })
 export class AppModule {}

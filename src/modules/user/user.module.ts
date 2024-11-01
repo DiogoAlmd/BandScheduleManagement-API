@@ -4,10 +4,9 @@ import { UserService } from "./user.service";
 import { UserController } from "./user.controller";
 import { User } from "../../common/entities/user.entity";
 import { HashService } from "src/common/middlewares/hash.service";
-import { Instrument } from "src/common/entities/instrument.entity";
 
 @Module({
-  imports: [TypeOrmModule.forFeature([User, Instrument])],
+  imports: [TypeOrmModule.forFeature([User])],
   providers: [UserService, HashService],
   controllers: [UserController],
 })
