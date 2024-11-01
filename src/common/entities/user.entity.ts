@@ -4,7 +4,10 @@ import {
   Column,
   CreateDateColumn,
   UpdateDateColumn,
+  JoinTable,
+  ManyToMany,
 } from "typeorm";
+import { Instrument } from "./instrument.entity";
 
 @Entity()
 export class User {
@@ -28,4 +31,10 @@ export class User {
 
   @UpdateDateColumn()
   updatedAt: Date;
+
+  @ManyToMany(() => Instrument, (instrument) => instrument.musicians, {
+    cascade: true,
+  })
+  @JoinTable()
+  instruments: Instrument[];
 }

@@ -4,8 +4,9 @@ import {
   IsStrongPassword,
   IsEnum,
   IsNotEmpty,
+  IsOptional,
+  IsArray,
 } from "class-validator";
-
 export class CreateUserDto {
   @IsNotEmpty()
   @IsString()
@@ -18,6 +19,11 @@ export class CreateUserDto {
   @IsNotEmpty()
   @IsStrongPassword()
   password: string;
+
+  @IsOptional()
+  @IsNotEmpty()
+  @IsArray()
+  instrumentIds?: number[];
 
   @IsNotEmpty()
   @IsEnum(["admin", "musician"], {

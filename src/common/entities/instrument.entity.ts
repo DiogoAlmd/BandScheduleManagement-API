@@ -1,5 +1,5 @@
 import { Entity, PrimaryGeneratedColumn, Column, ManyToMany } from "typeorm";
-import { Musician } from "./musician.entity";
+import { User } from "./user.entity";
 
 @Entity()
 export class Instrument {
@@ -9,6 +9,6 @@ export class Instrument {
   @Column({ unique: true, length: 255 })
   name: string;
 
-  @ManyToMany(() => Musician, (musician) => musician.instruments)
-  musicians: Musician[];
+  @ManyToMany(() => User, (user) => user.instruments)
+  musicians: User[];
 }
