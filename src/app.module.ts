@@ -3,6 +3,7 @@ import { ConfigModule, ConfigService } from "@nestjs/config";
 import { TypeOrmModule } from "@nestjs/typeorm";
 import { HelloModule } from "./modules/hello/hello.module";
 import { UserModule } from "./modules/user/user.module";
+import { AuthModule } from './modules/auth/auth.module';
 
 @Module({
   imports: [
@@ -14,17 +15,18 @@ import { UserModule } from "./modules/user/user.module";
       inject: [ConfigService],
       useFactory: async (configService: ConfigService) => ({
         type: "mysql",
-        host: configService.get<string>("DB_HOST"),
-        port: configService.get<number>("DB_PORT"),
-        username: configService.get<string>("DB_USERNAME"),
-        password: configService.get<string>("DB_PASSWORD"),
-        database: configService.get<string>("DB_DATABASE"),
+        host: configService.getOrThrow<string>("DB_HOST"),
+        port: configService.getOrThrow<number>("DB_PORT"),
+        username: configService.getOrThrow<string>("DB_USERNAME"),
+        password: configService.getOrThrow<string>("DB_PASSWORD"),
+        database: configService.getOrThrow<string>("DB_DATABASE"),
         autoLoadEntities: true,
         synchronize: true,
       }),
     }),
     HelloModule,
     UserModule,
+    AuthModule,
   ],
 })
 export class AppModule {}
