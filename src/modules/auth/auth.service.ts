@@ -4,7 +4,7 @@ import { Repository } from "typeorm";
 import { User } from "../../common/entities/user.entity";
 import { SignInDto } from "./dto/sign-in.dto";
 import { HashService } from "src/common/middlewares/hash.service";
-import { JwtService } from '@nestjs/jwt';
+import { JwtService } from "@nestjs/jwt";
 
 @Injectable()
 export class AuthService {
@@ -12,10 +12,13 @@ export class AuthService {
     @InjectRepository(User)
     private readonly userRepository: Repository<User>,
     private readonly hashService: HashService,
-    private readonly jwtService: JwtService
+    private readonly jwtService: JwtService,
   ) {}
 
-  async signIn({ email, password }: SignInDto): Promise<{ accessToken: string }> {
+  async signIn({
+    email,
+    password,
+  }: SignInDto): Promise<{ accessToken: string }> {
     const user = await this.userRepository.findOne({ where: { email } });
     if (!user || !(await this.hashService.compare(password, user.password))) {
       throw new UnauthorizedException("Invalid credentials");

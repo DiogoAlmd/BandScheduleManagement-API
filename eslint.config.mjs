@@ -10,7 +10,10 @@ export default [
     files: ['**/*.{js,mjs,cjs,ts}'],
     languageOptions: {
       parser: tsParser,
-      globals: globals.browser,
+      globals: {
+        ...globals.node,
+        ...globals.browser,
+      },
     },
     plugins: {
       '@typescript-eslint': tseslint,
@@ -25,8 +28,5 @@ export default [
       '@typescript-eslint/no-explicit-any': 'warn',
       'prettier/prettier': 'warn',
     },
-    env:{
-      "node": true,
-    }
   },
 ];
