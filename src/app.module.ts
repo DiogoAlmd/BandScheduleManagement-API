@@ -6,6 +6,7 @@ import { UserModule } from "./modules/user/user.module";
 import { AuthModule } from "./modules/auth/auth.module";
 import { InstrumentModule } from "./modules/instrument/instrument.module";
 import { MusicianModule } from "./modules/musician/musician.module";
+import { ScaleModule } from './modules/scale/scale.module';
 
 @Module({
   imports: [
@@ -31,6 +32,7 @@ import { MusicianModule } from "./modules/musician/musician.module";
     AuthModule,
     InstrumentModule,
     MusicianModule,
+    ScaleModule,
   ],
 })
 export class AppModule {}
