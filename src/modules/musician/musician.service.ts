@@ -5,6 +5,7 @@ import { HashService } from "src/common/middlewares/hash.service";
 import { CreateMusicianDto } from "./dto/create-musician.dto";
 import { Instrument } from "src/common/entities/instrument.entity";
 import { User } from "src/common/entities/user.entity";
+import { Role } from "src/common/entities/user.entity";
 
 @Injectable()
 export class MusicianService {
@@ -32,7 +33,7 @@ export class MusicianService {
 
     const user = this.userRepository.create({
       ...createMusicianDto,
-      role: "musician",
+      role: Role.MUSICIAN,
       password: hashedPassword,
       instruments,
     });

@@ -4,8 +4,9 @@ import { JwtModule } from "@nestjs/jwt";
 import { AuthController } from "./auth.controller";
 import { AuthService } from "./auth.service";
 import { User } from "../../common/entities/user.entity";
-import { HashService } from "src/common/middlewares/hash.service";
 import { ConfigModule, ConfigService } from "@nestjs/config";
+import { JwtStrategy } from "./stretegies/jwt.strategy";
+import { HashService } from "src/common/middlewares/hash.service";
 
 @Module({
   imports: [
@@ -21,6 +22,7 @@ import { ConfigModule, ConfigService } from "@nestjs/config";
     }),
   ],
   controllers: [AuthController],
-  providers: [AuthService, HashService],
+  providers: [AuthService, JwtStrategy, HashService],
+  exports: [JwtModule, JwtStrategy],
 })
 export class AuthModule {}

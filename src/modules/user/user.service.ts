@@ -12,6 +12,7 @@ import { ScaleMusicianInstrument } from "../../common/entities/scale-musician-in
 import { CreateUserDto } from "./dto/create-user.dto";
 import { CreateScaleDto } from "./dto/create-scale.dto";
 import { HashService } from "src/common/middlewares/hash.service";
+import { Role } from "src/common/entities/user.entity";
 
 @Injectable()
 export class UserService {
@@ -35,7 +36,7 @@ export class UserService {
     const hashedPassword = await this.hashService.hash(createUserDto.password);
     const user = this.userRepository.create({
       ...createUserDto,
-      role: "admin",
+      role: Role.ADMIN,
       password: hashedPassword,
     });
 
@@ -67,7 +68,7 @@ export class UserService {
 
     for (const musician of musicians) {
       const foundMusician = await this.userRepository.findOne({
-        where: { id: musician.musicianId, role: "musician" },
+        where: { id: musician.musicianId, role: Role.MUSICIAN },
       });
       if (!foundMusician)
         throw new NotFoundException(
