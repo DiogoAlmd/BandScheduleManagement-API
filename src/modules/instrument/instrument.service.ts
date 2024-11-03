@@ -11,6 +11,10 @@ export class InstrumentService {
     private readonly instrumentRepository: Repository<Instrument>,
   ) {}
 
+  async findAll(): Promise<Instrument[]> {
+    return this.instrumentRepository.find();
+  }
+
   async createInstrument(instrumentDto: CreateInstrument): Promise<Instrument> {
     const instrument = this.instrumentRepository.create(instrumentDto);
     return this.instrumentRepository.save(instrument);
