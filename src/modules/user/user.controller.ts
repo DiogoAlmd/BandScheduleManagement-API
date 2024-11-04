@@ -1,7 +1,18 @@
-import { Controller, Post, Body, Get } from "@nestjs/common";
+import {
+  Controller,
+  Post,
+  Body,
+  Get,
+  Param,
+  ParseIntPipe,
+  UseGuards,
+} from "@nestjs/common";
 import { UserService } from "./user.service";
 import { CreateUserDto } from "./dto/create-user.dto";
-import { User } from "../../common/entities/user.entity";
+import { Role, User } from "../../common/entities/user.entity";
+import { Roles } from "src/common/decorators/roles.decorator";
+import { JwtAuthGuard } from "src/common/guards/jwt-auth.guard";
+import { UserRolesGuard } from "src/common/guards/roles.guard";
 
 @Controller("user")
 export class UserController {
@@ -12,8 +23,17 @@ export class UserController {
     return this.userService.create(createUserDto);
   }
 
+  @UseGuards(JwtAuthGuard, UserRolesGuard)
+  @Roles(Role.ADMIN)
   @Get()
   async findAll(): Promise<User[]> {
     return this.userService.findAll();
+  }
+
+  @UseGuards(JwtAuthGuard, UserRolesGuard)
+  @Roles(Role.ADMIN)
+  @Get("/:id")
+  async findOne(@Param("id", ParseIntPipe) id: number): Promise<User> {
+    return this.userService.findOne(id);
   }
 }

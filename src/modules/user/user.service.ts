@@ -29,4 +29,8 @@ export class UserService {
   async findAll(): Promise<User[]> {
     return this.userRepository.find({ relations: ["instruments"] });
   }
+
+  async findOne(id: number): Promise<User> {
+    return this.userRepository.findOne({ where: { id, role: Role.ADMIN } });
+  }
 }
