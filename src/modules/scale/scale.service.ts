@@ -78,4 +78,15 @@ export class ScaleService {
 
     return scale;
   }
+
+  async findAll(): Promise<Scale[]> {
+    return this.scaleRepository.find({
+      relations: [
+        "createdBy",
+        "scaleMusicianInstruments",
+        "scaleMusicianInstruments.musician",
+        "scaleMusicianInstruments.instrument",
+      ],
+    });
+  }
 }

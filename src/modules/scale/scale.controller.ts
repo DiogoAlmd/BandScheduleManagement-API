@@ -1,6 +1,7 @@
 import {
   Body,
   Controller,
+  Get,
   Param,
   ParseIntPipe,
   Post,
@@ -25,5 +26,11 @@ export class ScaleController {
     @Body() createScaleDto: CreateScaleDto,
   ): Promise<Scale> {
     return this.scaleService.createScale(adminId, createScaleDto);
+  }
+
+  @Roles(Role.ADMIN)
+  @Get()
+  async findAll(): Promise<Scale[]> {
+    return this.scaleService.findAll();
   }
 }
