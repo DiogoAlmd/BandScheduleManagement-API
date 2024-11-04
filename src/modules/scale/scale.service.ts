@@ -1,4 +1,5 @@
 import {
+  ConflictException,
   ForbiddenException,
   Injectable,
   NotFoundException,
@@ -27,6 +28,7 @@ export class ScaleService {
     @InjectRepository(ScaleMusician)
     private readonly scaleMusicianRepository: Repository<ScaleMusician>,
   ) {}
+
   async createScale(
     adminId: number,
     createScaleDto: CreateScaleDto,
@@ -56,6 +58,18 @@ export class ScaleService {
         );
       }
 
+      const existingAssociation = await this.scaleMusicianRepository.findOne({
+        where: {
+          scale: { id: scale.id },
+          musician: { id: musician.musicianId },
+        },
+      });
+      if (existingAssociation) {
+        throw new ConflictException(
+          `Musician with ID ${musician.musicianId} is already assigned to this scale.`,
+        );
+      }
+
       const instruments = await this.instrumentRepository.findBy({
         id: In(musician.instrumentIds),
       });
@@ -64,12 +78,13 @@ export class ScaleService {
           `One or more instruments for musician ID ${musician.musicianId} not found.`,
         );
       }
-      const ScaleMusician = this.scaleMusicianRepository.create({
+
+      const scaleMusician = this.scaleMusicianRepository.create({
         scale,
         musician: foundMusician,
         instruments,
       });
-      await this.scaleMusicianRepository.save(ScaleMusician);
+      await this.scaleMusicianRepository.save(scaleMusician);
     }
 
     return this.scaleRepository.findOne({
@@ -135,6 +150,18 @@ export class ScaleService {
           );
         }
 
+        const existingAssociation = await this.scaleMusicianRepository.findOne({
+          where: {
+            scale: { id: scaleId },
+            musician: { id: musician.musicianId },
+          },
+        });
+        if (existingAssociation) {
+          throw new ConflictException(
+            `Musician with ID ${musician.musicianId} is already assigned to this scale.`,
+          );
+        }
+
         const instruments = await this.instrumentRepository.findBy({
           id: In(musician.instrumentIds),
         });
@@ -145,12 +172,12 @@ export class ScaleService {
           );
         }
 
-        const ScaleMusician = this.scaleMusicianRepository.create({
+        const scaleMusician = this.scaleMusicianRepository.create({
           scale: existingScale,
           musician: foundMusician,
           instruments,
         });
-        await this.scaleMusicianRepository.save(ScaleMusician);
+        await this.scaleMusicianRepository.save(scaleMusician);
       }
     }
 
@@ -169,8 +196,9 @@ export class ScaleService {
     const scale = await this.scaleRepository.findOne({
       where: { id: scaleId },
     });
-    if (!scale)
+    if (!scale) {
       throw new NotFoundException(`Scale with ID ${scaleId} not found.`);
+    }
 
     await this.scaleRepository.delete(scaleId);
   }
