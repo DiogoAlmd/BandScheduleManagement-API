@@ -3,19 +3,12 @@ import { ScaleService } from "./scale.service";
 import { ScaleController } from "./scale.controller";
 import { TypeOrmModule } from "@nestjs/typeorm";
 import { Instrument } from "src/common/entities/instrument.entity";
-import { ScaleMusicianInstrument } from "src/common/entities/scale-musician-instrument.entity";
+import { ScaleMusician } from "src/common/entities/scale-musician.entity";
 import { Scale } from "src/common/entities/scale.entity";
 import { User } from "src/common/entities/user.entity";
 
 @Module({
-  imports: [
-    TypeOrmModule.forFeature([
-      User,
-      Scale,
-      Instrument,
-      ScaleMusicianInstrument,
-    ]),
-  ],
+  imports: [TypeOrmModule.forFeature([User, Scale, Instrument, ScaleMusician])],
   providers: [ScaleService],
   controllers: [ScaleController],
 })

@@ -8,7 +8,7 @@ import {
   OneToMany,
 } from "typeorm";
 import { User } from "./user.entity";
-import { ScaleMusicianInstrument } from "./scale-musician-instrument.entity";
+import { ScaleMusician } from "./scale-musician.entity";
 
 @Entity()
 export class Scale {
@@ -21,14 +21,10 @@ export class Scale {
   @ManyToOne(() => User, (user) => user.id)
   createdBy: User;
 
-  @OneToMany(
-    () => ScaleMusicianInstrument,
-    (scaleMusicianInstrument) => scaleMusicianInstrument.scale,
-    {
-      cascade: true,
-    },
-  )
-  scaleMusicianInstruments: ScaleMusicianInstrument[];
+  @OneToMany(() => ScaleMusician, (scaleMusician) => scaleMusician.scale, {
+    cascade: true,
+  })
+  scaleMusician: ScaleMusician[];
 
   @CreateDateColumn()
   createdAt: Date;
