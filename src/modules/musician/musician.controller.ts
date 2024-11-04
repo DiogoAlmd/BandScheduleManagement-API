@@ -1,6 +1,7 @@
 import {
   Body,
   Controller,
+  Delete,
   Get,
   Param,
   ParseIntPipe,
@@ -32,6 +33,12 @@ export class MusicianController {
   @Get()
   async findAll(): Promise<User[]> {
     return this.musicianService.findAll();
+  }
+
+  @Roles(Role.ADMIN)
+  @Delete("/:id")
+  async remove(@Param("id", ParseIntPipe) id: number): Promise<void> {
+    return this.musicianService.remove(id);
   }
 
   @Roles(Role.ADMIN)

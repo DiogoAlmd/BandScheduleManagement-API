@@ -49,6 +49,18 @@ export class MusicianService {
     });
   }
 
+  async remove(id: number): Promise<void> {
+    const user = await this.userRepository.findOne({
+      where: { id, role: Role.MUSICIAN },
+    });
+
+    if (!user) {
+      throw new NotFoundException(`Musician with ID ${id} not found`);
+    }
+
+    await this.userRepository.remove(user);
+  }
+
   async update(
     id: number,
     updateMusicianDto: UpdateMusicianDto,
