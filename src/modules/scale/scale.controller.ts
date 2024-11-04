@@ -1,6 +1,7 @@
 import {
   Body,
   Controller,
+  Delete,
   Get,
   Param,
   ParseIntPipe,
@@ -22,7 +23,7 @@ import { UpdateScaleDto } from "./dto/update-scale.dto";
 export class ScaleController {
   constructor(private readonly scaleService: ScaleService) {}
   @Roles(Role.ADMIN)
-  @Post(":adminId/scale")
+  @Post(":adminId")
   async createScale(
     @Param("adminId", ParseIntPipe) adminId: number,
     @Body() createScaleDto: CreateScaleDto,
@@ -46,7 +47,7 @@ export class ScaleController {
   }
 
   @Roles(Role.ADMIN)
-  @Post(":scaleId/delete")
+  @Delete(":scaleId/delete")
   async deleteScale(
     @Param("scaleId", ParseIntPipe) scaleId: number,
   ): Promise<void> {

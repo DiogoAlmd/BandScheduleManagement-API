@@ -23,6 +23,7 @@ export class Scale {
 
   @OneToMany(() => ScaleMusician, (scaleMusician) => scaleMusician.scale, {
     cascade: true,
+    onDelete: "CASCADE",
   })
   scaleMusician: ScaleMusician[];
 
