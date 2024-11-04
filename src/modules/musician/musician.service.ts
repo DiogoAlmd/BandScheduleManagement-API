@@ -42,6 +42,13 @@ export class MusicianService {
     return this.userRepository.save(user);
   }
 
+  async findAll(): Promise<User[]> {
+    return this.userRepository.find({
+      where: { role: Role.MUSICIAN },
+      relations: ["instruments"],
+    });
+  }
+
   async update(
     id: number,
     updateMusicianDto: UpdateMusicianDto,

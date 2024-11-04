@@ -1,6 +1,7 @@
 import {
   Body,
   Controller,
+  Get,
   Param,
   ParseIntPipe,
   Patch,
@@ -25,6 +26,12 @@ export class MusicianController {
   @Post()
   async create(@Body() createMusicianDto: CreateMusicianDto): Promise<User> {
     return this.musicianService.create(createMusicianDto);
+  }
+
+  @Roles(Role.ADMIN)
+  @Get()
+  async findAll(): Promise<User[]> {
+    return this.musicianService.findAll();
   }
 
   @Roles(Role.ADMIN)
