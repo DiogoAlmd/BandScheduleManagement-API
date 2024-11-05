@@ -17,7 +17,6 @@ import { UserRolesGuard } from "src/common/guards/roles.guard";
 import { Roles } from "src/common/decorators/roles.decorator";
 import { Role } from "src/common/entities/user.entity";
 import { UpdateMusicianDto } from "./dto/update-musician.dto";
-import { Instrument } from "src/common/entities/instrument.entity";
 
 @UseGuards(JwtAuthGuard, UserRolesGuard)
 @Controller("musician")
@@ -49,13 +48,5 @@ export class MusicianController {
     @Body() updateMusicianDto: UpdateMusicianDto,
   ): Promise<User> {
     return this.musicianService.update(id, updateMusicianDto);
-  }
-
-  @Roles(Role.MUSICIAN)
-  @Get("/myInstruments/:id")
-  async getMyInstruments(
-    @Param("id", ParseIntPipe) id: number,
-  ): Promise<Instrument[]> {
-    return this.musicianService.getMyInstruments(id);
   }
 }

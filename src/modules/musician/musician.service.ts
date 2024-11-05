@@ -107,17 +107,4 @@ export class MusicianService {
 
     return this.userRepository.save(user);
   }
-
-  async getMyInstruments(id: number): Promise<Instrument[]> {
-    const user = await this.userRepository.findOne({
-      where: { id, role: Role.MUSICIAN },
-      relations: ["instruments"],
-    });
-
-    if (!user) {
-      throw new NotFoundException(`Musician with ID ${id} not found`);
-    }
-
-    return user.instruments;
-  }
 }
