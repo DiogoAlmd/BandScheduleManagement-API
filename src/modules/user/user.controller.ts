@@ -7,6 +7,7 @@ import {
   ParseIntPipe,
   UseGuards,
   Patch,
+  Delete,
 } from "@nestjs/common";
 import { UserService } from "./user.service";
 import { CreateUserDto } from "./dto/create-user.dto";
@@ -47,5 +48,12 @@ export class UserController {
     @Body() updateUserDto: UpdateUserDto,
   ): Promise<User> {
     return this.userService.update(id, updateUserDto);
+  }
+
+  @UseGuards(JwtAuthGuard, UserRolesGuard)
+  @Roles(Role.ADMIN)
+  @Delete("/:id")
+  async remove(@Param("id", ParseIntPipe) id: number): Promise<void> {
+    return this.userService.remove(id);
   }
 }

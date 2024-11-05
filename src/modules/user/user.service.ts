@@ -28,7 +28,7 @@ export class UserService {
   }
 
   async findAll(): Promise<User[]> {
-    return this.userRepository.find({ relations: ["instruments"] });
+    return this.userRepository.find({ where: { role: Role.ADMIN } });
   }
 
   async findOne(id: number): Promise<User> {
@@ -43,5 +43,9 @@ export class UserService {
 
     Object.assign(user, updateUserDto);
     return this.userRepository.save(user);
+  }
+
+  async remove(id: number): Promise<void> {
+    await this.userRepository.delete(id);
   }
 }
