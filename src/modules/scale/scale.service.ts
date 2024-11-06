@@ -202,4 +202,29 @@ export class ScaleService {
 
     await this.scaleRepository.delete(scaleId);
   }
+
+  async getMusicianScales(musicianId: number): Promise<Scale[]> {
+    return this.scaleRepository.find({
+      join: {
+        alias: "scale",
+        innerJoin: {
+          scaleMusician: "scale.scaleMusician",
+          musician: "scaleMusician.musician",
+        },
+      },
+      where: {
+        scaleMusician: {
+          musician: {
+            id: musicianId,
+          },
+        },
+      },
+      relations: [
+        "createdBy",
+        "scaleMusician",
+        "scaleMusician.musician",
+        "scaleMusician.instruments",
+      ],
+    });
+  }
 }

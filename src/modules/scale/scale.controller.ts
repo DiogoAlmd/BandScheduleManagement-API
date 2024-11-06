@@ -53,4 +53,12 @@ export class ScaleController {
   ): Promise<void> {
     return this.scaleService.deleteScale(scaleId);
   }
+
+  @Roles(Role.MUSICIAN)
+  @Get("musicianScales/:musicianId")
+  async getMusicianScales(
+    @Param("musicianId", ParseIntPipe) musicianId: number,
+  ): Promise<Scale[]> {
+    return this.scaleService.getMusicianScales(musicianId);
+  }
 }
