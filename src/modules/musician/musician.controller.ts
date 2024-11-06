@@ -49,4 +49,10 @@ export class MusicianController {
   ): Promise<User> {
     return this.musicianService.update(id, updateMusicianDto);
   }
+
+  @Roles(Role.MUSICIAN)
+  @Get("/:id")
+  async findOne(@Param("id", ParseIntPipe) id: number): Promise<User> {
+    return this.musicianService.findOne(id);
+  }
 }

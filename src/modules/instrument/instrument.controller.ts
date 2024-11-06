@@ -17,7 +17,6 @@ import { JwtAuthGuard } from "src/common/guards/jwt-auth.guard";
 import { UserRolesGuard } from "src/common/guards/roles.guard";
 
 @UseGuards(JwtAuthGuard, UserRolesGuard)
-@Roles(Role.ADMIN)
 @Controller("instrument")
 export class InstrumentController {
   constructor(private readonly instrumentService: InstrumentService) {}
@@ -26,12 +25,14 @@ export class InstrumentController {
   async findAll(): Promise<Instrument[]> {
     return this.instrumentService.findAll();
   }
+  @Roles(Role.ADMIN)
   @Post()
   async create(
     @Body() createInstrumentDto: CreateInstrument,
   ): Promise<Instrument> {
     return this.instrumentService.createInstrument(createInstrumentDto);
   }
+  @Roles(Role.ADMIN)
   @Delete("/:id")
   async delete(@Param("id", ParseIntPipe) id: number): Promise<Instrument> {
     return this.instrumentService.deleteInstrument(id);
