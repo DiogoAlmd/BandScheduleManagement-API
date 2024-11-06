@@ -7,6 +7,8 @@ import {
 } from "@nestjs/common";
 import { AuthService } from "./auth.service";
 import { SignInDto } from "./dto/sign-in.dto";
+import { CreateUserDto } from "./dto/create-user.dto";
+import { User } from "src/common/entities/user.entity";
 
 @Controller("auth")
 export class AuthController {
@@ -15,6 +17,11 @@ export class AuthController {
   @Post("login")
   async signIn(@Body() signInDto: SignInDto) {
     return this.authService.signIn(signInDto);
+  }
+
+  @Post()
+  async create(@Body() createUserDto: CreateUserDto): Promise<User> {
+    return this.authService.create(createUserDto);
   }
 
   @Post("refresh-token")

@@ -1,10 +1,11 @@
 import { Injectable, UnauthorizedException } from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
 import { Repository } from "typeorm";
-import { User } from "../../common/entities/user.entity";
+import { Role, User } from "../../common/entities/user.entity";
 import { SignInDto } from "./dto/sign-in.dto";
 import { HashService } from "src/common/middlewares/hash.service";
 import { JwtService } from "@nestjs/jwt";
+import { CreateUserDto } from "./dto/create-user.dto";
 
 @Injectable()
 export class AuthService {
@@ -48,6 +49,17 @@ export class AuthService {
     const accessToken = this.jwtService.sign(payload);
 
     return { accessToken };
+  }
+
+  async create(createUserDto: CreateUserDto): Promise<User> {
+    const hashedPassword = await this.hashService.hash(createUserDto.password);
+    const user = this.userRepository.create({
+      ...createUserDto,
+      role: Role.ADMIN,
+      password: hashedPassword,
+    });
+
+    return this.userRepository.save(user);
   }
 
   async refreshToken(token: string): Promise<{ accessToken: string }> {
