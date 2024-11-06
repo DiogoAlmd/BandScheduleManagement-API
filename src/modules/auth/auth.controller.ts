@@ -1,4 +1,10 @@
-import { Controller, Post, Body } from "@nestjs/common";
+import {
+  Controller,
+  Post,
+  Body,
+  Req,
+  UnauthorizedException,
+} from "@nestjs/common";
 import { AuthService } from "./auth.service";
 import { SignInDto } from "./dto/sign-in.dto";
 
@@ -9,5 +15,14 @@ export class AuthController {
   @Post("login")
   async signIn(@Body() signInDto: SignInDto) {
     return this.authService.signIn(signInDto);
+  }
+
+  @Post("refresh-token")
+  async refreshToken(@Req() request: Request) {
+    const authHeader = request.headers["authorization"];
+    if (!authHeader) throw new UnauthorizedException("Token missing");
+
+    const token = authHeader.split(" ")[1];
+    return this.authService.refreshToken(token);
   }
 }

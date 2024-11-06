@@ -24,9 +24,54 @@ export class AuthService {
       throw new UnauthorizedException("Invalid credentials");
     }
 
-    const payload = { userId: user.id, email: user.email, role: user.role };
+    let payload;
+    if (user.role === "admin") {
+      payload = {
+        userId: user.id,
+        email: user.email,
+        role: user.role,
+        name: user.name,
+      };
+    } else if (user.role === "musician") {
+      const musician = await this.userRepository.findOne({
+        where: { id: user.id },
+        relations: ["instruments"],
+      });
+      payload = {
+        userId: musician.id,
+        email: musician.email,
+        role: musician.role,
+        name: musician.name,
+        instruments: musician.instruments,
+      };
+    }
     const accessToken = this.jwtService.sign(payload);
 
     return { accessToken };
+  }
+
+  async refreshToken(token: string): Promise<{ accessToken: string }> {
+    try {
+      const decoded = this.jwtService.verify(token);
+      const user = await this.userRepository.findOne({
+        where: { id: decoded.userId },
+        relations: ["instruments"],
+      });
+
+      if (!user) throw new UnauthorizedException("Invalid token");
+
+      const newPayload = {
+        userId: user.id,
+        email: user.email,
+        role: user.role,
+        name: user.name,
+        instruments: user.instruments,
+      };
+      const newAccessToken = this.jwtService.sign(newPayload);
+
+      return { accessToken: newAccessToken };
+    } catch (error) {
+      throw new UnauthorizedException("Invalid token", error.message);
+    }
   }
 }
