@@ -41,7 +41,6 @@ export class MusicianController {
     return this.musicianService.remove(id);
   }
 
-  @Roles(Role.ADMIN)
   @Patch("/:id")
   async update(
     @Param("id", ParseIntPipe) id: number,
