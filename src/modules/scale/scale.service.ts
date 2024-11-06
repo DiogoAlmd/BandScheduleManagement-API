@@ -204,21 +204,7 @@ export class ScaleService {
   }
 
   async getMusicianScales(musicianId: number): Promise<Scale[]> {
-    return this.scaleRepository.find({
-      join: {
-        alias: "scale",
-        innerJoin: {
-          scaleMusician: "scale.scaleMusician",
-          musician: "scaleMusician.musician",
-        },
-      },
-      where: {
-        scaleMusician: {
-          musician: {
-            id: musicianId,
-          },
-        },
-      },
+    const scales = await this.scaleRepository.find({
       relations: [
         "createdBy",
         "scaleMusician",
@@ -226,5 +212,13 @@ export class ScaleService {
         "scaleMusician.instruments",
       ],
     });
+
+    const filteredScales = scales.filter((scale) =>
+      scale.scaleMusician.some(
+        (scaleMusician) => scaleMusician.musician.id === musicianId,
+      ),
+    );
+
+    return filteredScales;
   }
 }
