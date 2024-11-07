@@ -29,6 +29,7 @@ export class MusicianController {
     return this.musicianService.create(createMusicianDto);
   }
 
+  @Roles(Role.ADMIN, Role.MUSICIAN)
   @Get()
   async findAll(): Promise<User[]> {
     return this.musicianService.findAll();
